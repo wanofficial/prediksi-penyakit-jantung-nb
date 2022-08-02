@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Prediksi Penyakit Jantung</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- Plugin CSS -->
+  <link href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.css')}}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/creative.css')}}" rel="stylesheet">
+
+  <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Prediksi Serangan Jantung</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#data">Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#result">Hasil & Akurasi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#predict">Prediksi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#conclusion">Kesimpulan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">Tentang</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h1 class="text-uppercase">
+            <strong>Prediksi Potensi Serangan Jantung</strong>
+          </h1>
+          <hr>
+        </div>
+        <div class="col-lg-8 mx-auto">
+          <p class="text-faded mb-5">Serangan jantung merupakan salah satu penyakit paling mematikan di dunia dan menjadi salah satu penyebab utama dari sekian banyak kematian. Cegah serangan jantung sebelum Anda terlambat.</p>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#predict">Prediksi Sekarang</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="data">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center " style="padding-bottom: 30px">
+          <h2 class="section-heading text-black">Data Apa yang Kita Gunakan ?</h2>
+          <hr class="my-4">
+          <p>Data yang digunakan merupakan dataset prediksi serangan jantung. Jumlah dataset yang digunakan ada sebanyak {{jumlah_data}} data untuk
+          berbagai macam pengujian. Setiap pengujian memakai 75% dari dataset sebagai Data Train dan 25% sebagai Data Test.</p>
+        </div>
+      </div>
+      <h4>Contoh Sample Data</h4>
+      <table class="table table-bordered table-sm text-center">
+        <tr>
+          <th>#</th>
+          <th>Age</th>
+          <th>Sex</th>
+          <th>Cp</th>
+          <th>trestbps</th>
+          <th>chol</th>
+          <th>fbs</th>
+          <th>restecg</th>
+          <th>thalach</th>
+          <th>exang</th>
+          <th>oldpeak</th>
+          <th>num</th>
+        </tr>
+        <tbody>
+          {% for n, data in data_sample %}
+          <tr>
+            <td>{{n+1}}</td>
+            <td>{{data[0]}}</td>
+            <td>{{data[1]}}</td>
+            <td>{{data[2]}}</td>
+            <td>{{data[3]}}</td>
+            <td>{{data[4]}}</td>
+            <td>{{data[5]}}</td>
+            <td>{{data[6]}}</td>
+            <td>{{data[7]}}</td>
+            <td>{{data[8]}}</td>
+            <td>{{data[9]}}</td>
+            <td>{{data[10]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="hPedding">
+        <h4>Keterangan</h4>
+        <table class="table table-bordered table-sm">
+          <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 10%">Atribut</th>
+            <th>Keterangan</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Usia</td>
+            <td>Usia dalam tahun</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Sex</td>
+            <td>Jenis Kelamin; 1 : pria , 0 : wanita</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>cp</td>
+            <td>Jenis nyeri dada; 1: angina tipikal, 2: angina atipikal, 3: nyeri non-angina, 4: tanpa gejala</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>trestbps</td>
+            <td>Tekanan Darah ketika rileks (dalam satuan mm / Hg saat masuk rumah sakit</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Chol</td>
+            <td>Serum kolestoral atau total kolestrol darah dalam mg / dl</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>fbs</td>
+            <td>Gula darah ketika berpuasa 1 = > 120 mg / dl, 0 = < 120 mg / dl</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>restecg</td>
+            <td>Hasil elektrokardiografi; 0: normal, 1: memiliki kelainan gelombang ST-T (inversi gelombang T dan / atau elevasi ST atau depresi> 0,05 mV), 2: menunjukkan kemungkinan hipertrofi ventrikel kiri dengan kriteria Estes
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>thalach</td>
+            <td>Maksimal denyut jantung yang tercapai</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>exang</td>
+            <td>Sensasi sakit di dada keika olahraga (sesak pada dada); 0 : tidak, 1 : ya</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>oldpeak</td>
+            <td>ST Deppresion = temuan pada elektrokardiogram ketika jejak segmen ST rendah di bawah batas ambang secara normal</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>num</td>
+            <td>Diagnosis penyakit jantung (status penyakit angiografi); 0 : kurang dari 50% diameter menyempit, 1 : lebih besar dari Penyempitan diameter 50%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section style="background-color:#e30606" id="result">
+    <div class="container text-white">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading">Bagaimana Hasilnya ?</h2>
+          <hr class="my-4">
+        </div>
+      </div>
+    </div>
+    <div class="container text-black text-center w-50">
+        <div class="card">
+          <div class="card-header">Model 1</div>
+          <div class="card-body">
+              <p>Dataset yang digunakan sebanyak {{jumlah_data}}</p>
+              <p>Akurasi : {{ acc1 }}%</p>
+          </div>
+        </div>
+  </section>
+
+
+  <section id="predict">
+    <div class="container-fluid p-0 text-center">
+      <h2 class="section-heading text-center">Prediksi Sekarang</h2>
+      <hr class="light my-4">
+      <form id="upload-form" action="{{ url_for('index', _anchor='hasil-prediksi') }}" method="POST" >
+        <div class="container">
+          <div class="form-group row ">
+            <label for="inputNama" class="col-sm-3 col-form-label" style="text-align: right;">Nama</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputNama" name="nama" placeholder="Nama" required="Please fill out this field">
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputUmur" class="col-sm-3 col-form-label" style="text-align: right;">Umur</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputUmur" name="umur" placeholder="Umur" required="Please fill out this field">
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputJK" class="col-sm-3 col-form-label" style="text-align: right;">Jenis Kelamin</label>
+            <div class="form-group col-sm-6">
+              <select class="form-control" id="exampleFormControlSelect1" name="sex">
+                <option value="1">Pria</option>
+                <option value="0">Wanita</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputNyeriData" class="col-sm-3 col-form-label" style="text-align: right;">Jenis Nyeri Dada</label>
+            <div class="form-group col-sm-6">
+              <select class="form-control" id="exampleFormControlSelect1" name="nyeri">
+                <option value="1">1 : Angina tipikal</option>
+                <option value="2">2 : Angina atipikal</option>
+                <option value="3">3 : Nyeri non-angina</option>
+                <option value="4">4 : Tanpa Gejala</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputTDarah" class="col-sm-3 col-form-label" style="text-align: right;">Tekanan Darah</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputTDarah" name="tekanan_darah" placeholder="Tekanan Darah (mm/Hg)" required="Please fill out this field">
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputKolestrol" class="col-sm-3 col-form-label" style="text-align: right;">Kolestrol</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputKolestrol" name="kolesterol" placeholder="Kolestrol (mg/dl)" required="Please fill out this field">
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputGulaDarah" class="col-sm-3 col-form-label" style="text-align: right;">Gula Darah</label>
+            <div class="form-group col-sm-6">
+              <select class="form-control" id="exampleFormControlSelect1" name="guldar">
+                <option value="0">0 : kurang dari 120</option>
+                <option value="1">1 : lebih dari 120</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="inputNyeriData" class="col-sm-3 col-form-label" style="text-align: right;">Hasil Elektrokardiografi</label>
+            <div class="form-group col-sm-6">
+              <select class="form-control" id="exampleFormControlSelect1" name="elektrokardiografi">
+               <option value="0">0 : normal</option>
+               <option value="1">1 : memiliki kelainan</option>
+               <option value="2">2 : kemungkinan hipertrofi kiri</option>
+             </select>
+           </div>
+         </div>
+         <div class="form-group row ">
+          <label for="inputDenyutNadi" class="col-sm-3 col-form-label" style="text-align: right;">Max denyut nadi tercapai</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="inputDenyutNadi" placeholder="Max denyut nadi" name="denyut" required="Please fill out this field">
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label for="inputSesak" class="col-sm-3 col-form-label" style="text-align: right;">Sesak pada dada</label>
+          <div class="form-group col-sm-6">
+            <select class="form-control" id="exampleFormControlSelect1" name="sesak">
+              <option value="0">0 : Ya</option>
+              <option value="1">1 : Tidak</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label for="inputDepresiST" class="col-sm-3 col-form-label" style="text-align: right;">Depresi ST</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="inputDepresiST" name="depresi" placeholder="Depresi ST" required="Please fill out this field">
+          </div>
+        </div>
+        <div class="container">
+          <button class="btn btn-primary btnPredict" type="submit">Prediksi</button>
+          <section id="hasil-prediksi">
+           <div class ="hasil-predict" style="display: {{display}}; margin-top: 30px;">
+            <div class="card">
+              <div class="card-header">Model 1</div>
+              <div class="card-body">
+                  <p>Hasil Prediksi : {{result}} </p>
+                  <p>Probabilitas : {{prob}}%</p>
+                  <p>Probabilitas serangan jantung : {{ prob_0 }}%</p>
+                  <p>Probabilitas tidak serangan jantung : {{ prob_1 }}%</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+  
+<section style="background-color:#e30606" id="conclusion">
+  <div class="container text-white">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="section-heading">Kesimpulan</h2>
+        <hr class="my-4 light">
+        <p class="mb-5">Aplikasi klasifikasi potensi serangan jantung menggunakan metode naïve bayes telah berhasil dibuat. Pengujian akurasi terhadap jumlah dataset berhasil dilakukan dengan akurasi tertinggi 84% pada model 1 dengan jumlah 219 data. 
+          Serta Pengguna dapat melakukan klasifikasi potensi serangan jantung secara lebih mudah dan lebih cepat</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-dark" id="about">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading text-white">Tentang Kami</h2>
+        <hr class="light my-4">
+      </div>
+    </div>
+  </div>
+  <div class="container text-white">
+    <div class="row">
+      <div class="col-lg-4 col-md-8 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <h5 class="mb-3 pAbout">RIDWAN</h5>
+          <p class="text-white mb-0">210210064</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-8 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <h5 class="mb-3 pAbout">LESTARI SIREGAR</h5>
+          <p class="text-white mb-0">210210076</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-8 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <h5 class="mb-3 pAbout">SUCI RAMADHANI</h5>
+          <p class="text-white mb-0">210210084</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-8 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <h5 class="mb-3 pAbout">ALIEF ACHMAD FADJRI</h5>
+          <p class="text-white mb-0">210210088</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-8 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <h5 class="mb-3 pAbout">JHENNY AYU DJOVIA BR HOMBING</h5>
+          <p class="text-white mb-0">210210082</p>
+        </div>
+      </div>
+    </div>
+    <div style="padding-top: 150px">
+      <h4>Program Studi Teknik Informatika</h4>
+      <h4>Universitas Putera Batam</h4>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <h5>Copyright &copy universitasputerabatam 2022</h5>
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap core JavaScript -->
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+<!-- Plugin JavaScript -->
+<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+<script src="{{ url_for('static', filename='vendor/scrollreveal/scrollreveal.min.js')}}"></script>
+<script src="{{ url_for('static', filename='vendor/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
+
+<!-- Custom scripts for this template -->
+<script src="{{ url_for('static', filename='js/creative.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/myJs.js')}}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>
